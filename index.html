@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Will You Be My Valentine? ❤️</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Georgia", serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 600px;
+        width: 90%;
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        position: relative;
+      }
+
+      .hearts {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .heart {
+        position: absolute;
+        font-size: 30px;
+        animation: float 4s ease-in infinite;
+        opacity: 0;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(100vh) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100px) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      h1 {
+        color: #e74c3c;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .message {
+        font-size: 1.2em;
+        color: #333;
+        margin: 30px 0;
+        line-height: 1.6;
+      }
+
+      .image-container {
+        margin: 30px 0;
+        border-radius: 15px;
+        overflow: hidden;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .image-container img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .buttons {
+        margin-top: 40px;
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .yes-btn {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        font-size: 1.2em;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: bold;
+        box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+      }
+
+      .yes-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(245, 87, 108, 0.6);
+      }
+
+      .no-btn {
+        background: #95a5a6;
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        font-size: 1.2em;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+      }
+
+      .no-btn:hover {
+        background: #7f8c8d;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .puzzle-container {
+        margin: 30px 0;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 15px;
+      }
+
+      .puzzle-title {
+        font-size: 1.3em;
+        color: #e74c3c;
+        margin-bottom: 15px;
+      }
+
+      .word-scramble {
+        font-size: 2em;
+        letter-spacing: 5px;
+        color: #667eea;
+        font-weight: bold;
+        margin: 20px 0;
+      }
+
+      input[type="text"] {
+        padding: 12px;
+        font-size: 1.1em;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        width: 80%;
+        max-width: 300px;
+        text-align: center;
+      }
+
+      .submit-btn {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        font-size: 1.1em;
+        border-radius: 25px;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: all 0.3s;
+      }
+
+      .submit-btn:hover {
+        background: #5568d3;
+        transform: translateY(-2px);
+      }
+
+      .result-message {
+        margin-top: 15px;
+        font-size: 1.1em;
+        font-weight: bold;
+      }
+
+      .success {
+        color: #27ae60;
+      }
+
+      .error {
+        color: #e74c3c;
+      }
+
+      .final-message {
+        font-size: 1.5em;
+        color: #e74c3c;
+        margin: 30px 0;
+        font-weight: bold;
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      .love-counter {
+        font-size: 1.2em;
+        margin: 20px 0;
+        color: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hearts" id="heartsContainer"></div>
+
+    <div class="container">
+      <!-- Screen 1: Initial Question -->
+      <div id="screen1">
+        <h1>💕 A Special Question 💕</h1>
+        <div class="message">
+          My dearest love,<br /><br />
+          Will you forever be my Valentine?
+        </div>
+        <div class="image-container">
+          <!-- You can replace this with your own image -->
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23ffe0e0' width='400' height='300'/%3E%3Ctext x='200' y='150' font-size='80' text-anchor='middle' fill='%23e74c3c'%3E❤️%3C/text%3E%3Ctext x='200' y='200' font-size='20' text-anchor='middle' fill='%23555'%3EAdd your photo here%3C/text%3E%3C/svg%3E"
+            alt="Love"
+          />
+        </div>
+        <div class="buttons">
+          <button class="yes-btn" onclick="showScreen2()">
+            Yes! Always! 💖
+          </button>
+          <button
+            class="no-btn"
+            id="noBtn"
+            onmouseover="moveButton()"
+            onclick="tryToClickNo()"
+          >
+            No
+          </button>
+        </div>
+      </div>
+
+      <!-- Screen 2: Word Scramble Puzzle -->
+      <div id="screen2" class="hidden">
+        <h1>🧩 Puzzle Time! 🧩</h1>
+        <div class="puzzle-container">
+          <div class="puzzle-title">Unscramble this word:</div>
+          <div class="word-scramble">VOREREF</div>
+          <div class="message">Hint: How long will I love you?</div>
+          <input type="text" id="wordAnswer" placeholder="Your answer" />
+          <br />
+          <button class="submit-btn" onclick="checkWord()">Submit</button>
+          <div id="wordResult" class="result-message"></div>
+        </div>
+      </div>
+
+      <!-- Screen 3: Love Counter -->
+      <div id="screen3" class="hidden">
+        <h1>💝 One More Thing... 💝</h1>
+        <div class="message">
+          How much do I love you?<br />
+          Click the heart to find out!
+        </div>
+        <div
+          style="font-size: 100px; cursor: pointer; margin: 30px 0"
+          onclick="countLove()"
+        >
+          ❤️
+        </div>
+        <div class="love-counter">
+          Love meter: <span id="loveCount">0</span>%
+        </div>
+        <div id="continueBtn3" class="hidden">
+          <button
+            class="yes-btn"
+            onclick="showScreen4()"
+            style="margin-top: 20px"
+          >
+            Continue 💕
+          </button>
+        </div>
+      </div>
+
+      <!-- Screen 4: Final Screen -->
+      <div id="screen4" class="hidden">
+        <h1>💖 Forever & Always 💖</h1>
+        <div class="final-message">You are my everything!</div>
+        <div class="message">
+          Thank you for being my Valentine, today and every day.<br /><br />
+          I love you more than words can express! 💕<br /><br />
+          Happy Valentine's Day, my love!
+        </div>
+        <div class="image-container">
+          <img
+            src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='%23ffe0e0' width='400' height='300'/%3E%3Ctext x='200' y='120' font-size='60' text-anchor='middle' fill='%23e74c3c'%3E💑%3C/text%3E%3Ctext x='200' y='180' font-size='30' text-anchor='middle' fill='%23e74c3c'%3EForever%3C/text%3E%3Ctext x='200' y='220' font-size='20' text-anchor='middle' fill='%23555'%3EAdd your photo here%3C/text%3E%3C/svg%3E"
+            alt="Together Forever"
+          />
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let noButtonClicks = 0;
+      let loveCounter = 0;
+
+      // Create floating hearts
+      function createHeart() {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = Math.random() * 3 + 3 + "s";
+        heart.style.animationDelay = Math.random() * 2 + "s";
+        document.getElementById("heartsContainer").appendChild(heart);
+
+        setTimeout(() => heart.remove(), 7000);
+      }
+
+      setInterval(createHeart, 300);
+
+      function moveButton() {
+        const button = document.getElementById("noBtn");
+        const maxX = window.innerWidth - button.offsetWidth - 100;
+        const maxY = window.innerHeight - button.offsetHeight - 100;
+
+        const randomX = Math.random() * maxX;
+        const randomY = Math.random() * maxY;
+
+        button.style.position = "fixed";
+        button.style.left = randomX + "px";
+        button.style.top = randomY + "px";
+      }
+
+      function tryToClickNo() {
+        noButtonClicks++;
+        if (noButtonClicks >= 3) {
+          alert("Nice try! But there's no escaping love! 💕");
+          showScreen2();
+        }
+      }
+
+      function showScreen2() {
+        document.getElementById("screen1").classList.add("hidden");
+        document.getElementById("screen2").classList.remove("hidden");
+      }
+
+      function checkWord() {
+        const answer = document
+          .getElementById("wordAnswer")
+          .value.toLowerCase()
+          .trim();
+        const result = document.getElementById("wordResult");
+
+        if (answer === "forever") {
+          result.textContent = "✨ Perfect! That's right! ✨";
+          result.className = "result-message success";
+          setTimeout(showScreen3, 2000);
+        } else {
+          result.textContent = "❌ Not quite! Try again!";
+          result.className = "result-message error";
+        }
+      }
+
+      function showScreen3() {
+        document.getElementById("screen2").classList.add("hidden");
+        document.getElementById("screen3").classList.remove("hidden");
+      }
+
+      function countLove() {
+        if (loveCounter < 100) {
+          loveCounter += 10;
+          document.getElementById("loveCount").textContent = loveCounter;
+
+          if (loveCounter >= 100) {
+            setTimeout(() => {
+              document.getElementById("loveCount").textContent =
+                "∞ (Infinity!)";
+              document
+                .getElementById("continueBtn3")
+                .classList.remove("hidden");
+            }, 500);
+          }
+        }
+      }
+
+      function showScreen4() {
+        document.getElementById("screen3").classList.add("hidden");
+        document.getElementById("screen4").classList.remove("hidden");
+      }
+
+      // Allow Enter key for word puzzle
+      document.addEventListener("DOMContentLoaded", function () {
+        const input = document.getElementById("wordAnswer");
+        if (input) {
+          input.addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+              checkWord();
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
